@@ -50,7 +50,8 @@ fun ContainerDetailScreen(
     }
     val items by itemDao.getItemsByContainer(containerId).collectAsState(initial = emptyList())
 
-    if (container == null) {
+    val c = container
+    if (c == null) {
         Text("Loading...", modifier = Modifier.padding(16.dp))
         return
     }
@@ -59,7 +60,7 @@ fun ContainerDetailScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text(container.name) },
+                title = { Text(c.name) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
@@ -75,7 +76,7 @@ fun ContainerDetailScreen(
                                 itemDao.insert(
                                     ItemEntity(
                                         name = "New Item",
-                                        containerId = containerId,
+                                        containerId = c.id,
                                     ),
                                 )
                             }
