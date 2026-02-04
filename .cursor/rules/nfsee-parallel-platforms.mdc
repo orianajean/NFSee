@@ -1,0 +1,23 @@
+---
+description: NFSee – mirror every iOS change on Android (and vice versa) for data and behavior
+alwaysApply: true
+---
+
+# NFSee: Parallel iOS & Android
+
+This repo has two apps: **NFSee-Apple** (Swift/SwiftUI/SwiftData) and **NFSee-Android** (Kotlin/Jetpack Compose). They must stay in feature parity.
+
+## Rule: One Change = Both Platforms
+
+- **When adding or changing a data model on iOS** (SwiftData `@Model`, new fields, relationships): add or update the equivalent on Android (Room entities/DAOs or equivalent state).
+- **When adding or changing a screen or flow on iOS**: add or update the same screen/flow on Android with equivalent behavior (same actions, same info shown).
+- **When adding or changing logic on Android** (new entity, screen, or business rule): mirror the same data shape and behavior on iOS.
+
+## Reference
+
+- **Data model:** See `docs/DEVELOPMENT_PLAN.md` (Containers, Items, status: In / Out / Removed).
+- **Full plan:** Same doc (phases, local-first, no Firebase for MVP).
+
+## Before Marking a Feature Done
+
+Confirm: *Can the user do the same core action on both iOS and Android?* If not, implement the missing side.
