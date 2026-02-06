@@ -49,6 +49,7 @@ fun NFSeeApp(
             composable("containers") {
                 ContainerListScreen(
                     containerDao = containerDao,
+                    itemDao = itemDao,
                     navController = navController,
                 )
             }

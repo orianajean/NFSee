@@ -4,6 +4,7 @@
 # Xcode
 *.xcuserstate
 xcuserdata/
+NFSee-Apple/build/
 
 # Android (NFSee-Android)
 *.iml
@@ -20,6 +21,9 @@ xcuserdata/
 .externalNativeBuild
 .cxx
 local.properties
+
+# Cursor (local task config)
+.cursor/tasks.json
 
 # General
 *.log

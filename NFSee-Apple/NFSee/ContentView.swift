@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  NFSee
 //
-//  Main view: container list with items per container.
+//  Main view: container list with search-first UX.
 //
 
 import SwiftUI
@@ -11,14 +11,19 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Container.name) private var containers: [Container]
+    @State private var searchText = ""
+    @State private var statusFilter: ItemStatusFilter = .all
+    @State private var selectedContainerId: PersistentIdentifier?
+
+    private var selectedContainer: Container? {
+        containers.first { $0.id == selectedContainerId }
+    }
 
     var body: some View {
         NavigationSplitView {
-            List {
+            List(selection: $selectedContainerId) {
                 ForEach(containers) { container in
-                    NavigationLink {
-                        ContainerDetailView(container: container)
-                    } label: {
+                    NavigationLink(value: container.id) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(container.name)
                             if let location = container.locationLabel, !location.isEmpty {
@@ -32,6 +37,7 @@ struct ContentView: View {
                 .onDelete(perform: deleteContainers)
             }
             .navigationTitle("Containers")
+            .searchable(text: $searchText, prompt: "Search items, categories, containers")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
@@ -41,9 +47,38 @@ struct ContentView: View {
                         Label("Add Container", systemImage: "plus")
                     }
                 }
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Picker("Status", selection: $statusFilter) {
+                            ForEach(ItemStatusFilter.allCases, id: \.self) { filter in
+                                Text(filter.rawValue).tag(filter)
+                            }
+                        }
+                    } label: {
+                        Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+                    }
+                }
             }
         } detail: {
-            Text("Select a container")
+            Group {
+                if !searchText.trimmingCharacters(in: .whitespaces).isEmpty || statusFilter != .all {
+                    SearchResultsView(
+                        searchText: $searchText,
+                        statusFilter: $statusFilter,
+                        onSelectContainer: { container in
+                            selectedContainerId = container.id
+                        }
+                    )
+                } else if let container = selectedContainer {
+                    ContainerDetailView(container: container)
+                } else {
+                    ContentUnavailableView(
+                        "Select a container",
+                        systemImage: "tray",
+                        description: Text("Choose a container from the list or search for items.")
+                    )
+                }
+            }
         }
     }
 

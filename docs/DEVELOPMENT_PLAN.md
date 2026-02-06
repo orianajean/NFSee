@@ -60,7 +60,7 @@ Both platforms implement this model. Keep this doc updated when you add fields o
 
 ## 4. Implementation Phases
 
-### Phase 1: Align Data Models (Current)
+### Phase 1: Align Data Models ✓
 
 **Goal:** Replace template “Item with timestamp” with real **Container** and **Item** models and basic persistence.
 
@@ -73,7 +73,7 @@ Both platforms implement this model. Keep this doc updated when you add fields o
 
 **Exit criteria:** Both apps store and display containers and items with the same conceptual fields and status.
 
-### Phase 2: Search-First UX
+### Phase 2: Search-First UX ✓
 
 - **Both:** Add a single search entry point (e.g. search bar at top).
 - Search by: item name (partial), category, container name, status (e.g. “show Out”).

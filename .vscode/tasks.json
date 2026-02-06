@@ -1,0 +1,18 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run NFSee (iOS Simulator)",
+      "type": "shell",
+      "command": "./run-ios.sh",
+      "options": {
+        "cwd": "${workspaceFolder}/NFSee-Apple"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    }
+  ]
+}
