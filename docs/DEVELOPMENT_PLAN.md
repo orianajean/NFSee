@@ -119,7 +119,17 @@ Both platforms implement this model. Keep this doc updated when you add fields o
 
 ---
 
-## 7. Cursor Rule
+## 7. Git Branch Workflow
+
+- **`main`** – Stable releases only. Merge here when ready to ship.
+- **`develop`** – Default branch. Active development. Feature branches merge here via PR.
+- **`feature/*`** – One branch per feature (e.g. `feature/search-first-ux`). Create from `develop`, merge back via PR.
+
+**Flow:** `feature/xyz` → PR → `develop` → when ready for release → PR → `main`.
+
+---
+
+## 8. Cursor Rule
 
 A Cursor rule in `.cursor/rules/` enforces: **when changing iOS, mirror the change on Android (and vice versa for data and behavior).** Use it on every feature so parity is automatic.
 
