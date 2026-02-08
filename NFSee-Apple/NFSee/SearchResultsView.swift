@@ -65,16 +65,9 @@ struct SearchResultRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
+                StatusDot(indicator: item.statusIndicator)
                 Text(item.name)
                     .font(.headline)
-                if item.status == .out {
-                    Text("Out")
-                        .font(.caption2)
-                        .foregroundStyle(.orange)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Color.orange.opacity(0.2), in: Capsule())
-                }
             }
             if let container = item.container {
                 Text(container.name)

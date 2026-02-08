@@ -18,7 +18,7 @@ interface ItemDao {
     @Query(
         """
         SELECT items.id, items.name, items.category, items.status, items.containerId, items.createdAt,
-               containers.name AS containerName, containers.locationLabel AS containerLocation
+               items.markedOutAt, containers.name AS containerName, containers.locationLabel AS containerLocation
         FROM items
         INNER JOIN containers ON items.containerId = containers.id
         WHERE items.status != 'REMOVED'

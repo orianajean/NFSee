@@ -37,4 +37,25 @@ data class ItemEntity(
     val status: ItemStatus = ItemStatus.IN,
     val containerId: Long,
     val createdAt: Long = System.currentTimeMillis(),
-)
+    val markedOutAt: Long? = null,
+) {
+    val statusIndicator: ItemStatusIndicator
+        get() = when (status) {
+            ItemStatus.IN -> ItemStatusIndicator.GREEN
+            ItemStatus.OUT -> {
+                val outAt = markedOutAt ?: createdAt
+                val daysSinceOut = (System.currentTimeMillis() - outAt) / (24 * 60 * 60 * 1000L)
+                if (daysSinceOut <= 14) ItemStatusIndicator.YELLOW else ItemStatusIndicator.RED
+            }
+            ItemStatus.REMOVED -> ItemStatusIndicator.GREEN
+        }
+}
+
+/**
+ * Visual indicator for item status (green / yellow / red dot).
+ */
+enum class ItemStatusIndicator {
+    GREEN,   // In container
+    YELLOW,  // Out, within last 14 days
+    RED,     // Out, over 14 days
+}

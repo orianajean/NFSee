@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -21,12 +20,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.workingonit.nfsee.android.data.dao.ItemDao
 import com.workingonit.nfsee.android.data.entity.ItemSearchResult
-import com.workingonit.nfsee.android.data.entity.ItemStatus
+import com.workingonit.nfsee.android.data.entity.ItemStatusIndicator
 
 /**
  * Reusable search results list for embedding in other screens.
@@ -125,22 +123,11 @@ private fun SearchResultRow(
     ListItem(
         headlineContent = {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(result.name)
-                if (result.status == ItemStatus.OUT) {
-                    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-                    Text(
-                        text = "Out",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = Color(0xFFFF9800),
-                        modifier = Modifier
-                            .padding(horizontal = 6.dp)
-                            .padding(vertical = 2.dp)
-                            .background(
-                                Color(0xFFFF9800).copy(alpha = 0.2f),
-                                RoundedCornerShape(4.dp),
-                            ),
-                    )
-                }
+                com.workingonit.nfsee.android.ui.StatusDot(indicator = result.statusIndicator)
+                Text(
+                    result.name,
+                    modifier = Modifier.padding(start = 12.dp),
+                )
             }
         },
         supportingContent = {

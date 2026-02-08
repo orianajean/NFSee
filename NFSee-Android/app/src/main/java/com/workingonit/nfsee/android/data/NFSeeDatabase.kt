@@ -12,7 +12,7 @@ import com.workingonit.nfsee.android.data.entity.ItemEntity
 
 @Database(
     entities = [ContainerEntity::class, ItemEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false,
 )
 @TypeConverters(Converters::class)
@@ -28,7 +28,9 @@ abstract class NFSeeDatabase : RoomDatabase() {
                 context.applicationContext,
                 NFSeeDatabase::class.java,
                 DATABASE_NAME,
-            ).build()
+            )
+                .fallbackToDestructiveMigration()
+                .build()
         }
     }
 }

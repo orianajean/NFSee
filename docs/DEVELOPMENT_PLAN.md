@@ -80,7 +80,7 @@ Both platforms implement this model. Keep this doc updated when you add fields o
 - Results show: item name, container name, optional location, status.
 - Same behavior and scope on iOS and Android.
 
-### Phase 3: Item Status and “Out”
+### Phase 3: Item Status and “Out” ✓
 
 - **Both:** Every item has status In / Out / Removed.
 - **Both:** UI to mark an item as Out or back to In; optional “Removed” (or hide from main lists).

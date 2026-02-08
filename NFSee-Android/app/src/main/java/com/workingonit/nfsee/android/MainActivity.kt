@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.workingonit.nfsee.android.data.dao.ContainerDao
 import com.workingonit.nfsee.android.data.dao.ItemDao
+import com.workingonit.nfsee.android.data.SampleData
 import com.workingonit.nfsee.android.ui.ContainerDetailScreen
 import com.workingonit.nfsee.android.ui.ContainerListScreen
 import com.workingonit.nfsee.android.ui.theme.NFSeeAndroidTheme
@@ -40,6 +42,9 @@ fun NFSeeApp(
     itemDao: ItemDao,
 ) {
     val navController = rememberNavController()
+    LaunchedEffect(Unit) {
+        SampleData.seedIfEmpty(containerDao, itemDao)
+    }
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         NavHost(
             navController = navController,

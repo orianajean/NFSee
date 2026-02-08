@@ -12,6 +12,8 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Container.name) private var containers: [Container]
     @State private var searchText = ""
+    @State private var hasCheckedForSampleData = false
+
     @State private var statusFilter: ItemStatusFilter = .all
     @State private var selectedContainerId: PersistentIdentifier?
 
@@ -80,6 +82,13 @@ struct ContentView: View {
                 }
             }
         }
+        .task {
+            guard !hasCheckedForSampleData else { return }
+            hasCheckedForSampleData = true
+            if containers.isEmpty {
+                SampleData.seed(context: modelContext)
+            }
+        }
     }
 
     private func addContainer() {
@@ -106,6 +115,7 @@ struct ContainerDetailView: View {
         List {
             ForEach(container.items.filter { $0.status != .removed }) { item in
                 HStack {
+                    StatusDot(indicator: item.statusIndicator)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.name)
                         if let category = item.category, !category.isEmpty {
@@ -113,10 +123,18 @@ struct ContainerDetailView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
-                        if item.status == .out {
-                            Text("Out")
-                                .font(.caption2)
-                                .foregroundStyle(.orange)
+                    }
+                }
+                .contextMenu {
+                    if item.status == .inContainer {
+                        Button("Mark as Out") {
+                            item.status = .out
+                            item.markedOutAt = Date()
+                        }
+                    } else {
+                        Button("Mark as In") {
+                            item.status = .inContainer
+                            item.markedOutAt = nil
                         }
                     }
                 }
@@ -148,6 +166,25 @@ struct ContainerDetailView: View {
                 let item = visibleItems[index]
                 modelContext.delete(item)
             }
+        }
+    }
+}
+
+/// Colored dot indicating item status: green (in), yellow (out < 14 days), red (out > 14 days).
+struct StatusDot: View {
+    let indicator: ItemStatusIndicator
+
+    var body: some View {
+        Circle()
+            .fill(color)
+            .frame(width: 10, height: 10)
+    }
+
+    private var color: Color {
+        switch indicator {
+        case .green: return .green
+        case .yellow: return .yellow
+        case .red: return .red
         }
     }
 }
